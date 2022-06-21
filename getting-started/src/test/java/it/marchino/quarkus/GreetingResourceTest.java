@@ -1,21 +1,34 @@
 package it.marchino.quarkus;
 
 import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.RestAssured;
+
 import org.junit.jupiter.api.Test;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
+import java.util.UUID;
+
+import org.hamcrest.CoreMatchers;
 
 @QuarkusTest
 public class GreetingResourceTest {
 
-    @Test
-    public void testHelloEndpoint() {
-        given()
-          .when().get("/hello")
-          .then()
-             .statusCode(200)
-             .body(is("Hello from RESTEasy Reactive"));
-    }
+	@Test
+	public void testHelloEndpoint() {
+		RestAssured.given()
+			.when().get("/hello")
+			.then()
+			.statusCode(200)
+			.body(CoreMatchers.is("hello"));
+	}
+
+	@Test
+	public void testHelloWithNameEndpoint() {
+		final String name = UUID.randomUUID().toString();
+		RestAssured.given()
+			.when().get("/hello/" + name)
+			.then()
+			.statusCode(200)
+			.body(CoreMatchers.is("Hello " + name + ", your id is 1234"));
+	}
 
 }
