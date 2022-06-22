@@ -11,7 +11,7 @@ import it.marchino.quarkus.service.GreetingService;
 
 @Path("/hello")
 public class GreetingResource {
-	@Inject private GreetingService greetingService;
+	@Inject GreetingService greetingService;
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
