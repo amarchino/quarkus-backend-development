@@ -16,7 +16,8 @@ public class GreetingService {
 		return greetingConfig.prefix().orElse("_")
 			+ greetingConfig.name()
 			+ greetingConfig.suffix()
-			+ " Your country is " + greetingConfig.country().name();
+			+ " Your country is " + greetingConfig.country().name()
+			+ " - " + greetingConfig.base64Value();
 	}
 
 	public String sayHello(String name) {
