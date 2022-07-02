@@ -5,14 +5,19 @@ import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import org.jboss.logging.Logger;
+
 import it.marchino.quarkus.config.GreetingConfig;
 
 @ApplicationScoped
 public class GreetingService {
 
+	private static Logger LOGGER = Logger.getLogger(GreetingService.class);
+
 	@Inject GreetingConfig greetingConfig;
 
 	public String sayHello() {
+		LOGGER.debug("Saying hello to random user");
 		return greetingConfig.prefix().orElse("_")
 			+ greetingConfig.name()
 			+ greetingConfig.suffix()
