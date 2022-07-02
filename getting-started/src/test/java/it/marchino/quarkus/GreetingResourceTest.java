@@ -18,7 +18,7 @@ public class GreetingResourceTest {
 			.when().get("/hello")
 			.then()
 			.statusCode(200)
-			.body(CoreMatchers.is("_hello test! Your country is Germany"));
+			.body(CoreMatchers.is("_hello test! Your country is Germany - Hello"));
 	}
 
 	@Test
