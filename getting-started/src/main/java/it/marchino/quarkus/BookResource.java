@@ -2,7 +2,6 @@ package it.marchino.quarkus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -12,41 +11,49 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import it.marchino.quarkus.data.Book;
 
 @Path("/book")
 public class BookResource {
 
-	private static List<String> books = new ArrayList<>();
+	private static List<Book> books = new ArrayList<>();
 
 	static {
-		books.add("The Freelancer's Bible");
+		books.add(new Book("The Freelancer's Bible", "IDK"));
 	}
 
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	public String getBooks() {
-		return books.stream().collect(Collectors.joining(","));
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getBooks() {
+		// return Response.ok(books).build();
+		// return Response.serverError().build();
+		return Response.status(202).entity(books).build();
 	}
 
 	@POST
-	@Produces(MediaType.TEXT_PLAIN)
-	public String addBook(String book) {
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addBook(Book book) {
+		if(books.size() > 5) {
+			return Response.status(400).entity("No more than 5 books allowed").build();
+		}
 		books.add(book);
-		return book;
+		return Response.ok(book).build();
 	}
 
 	@PUT
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
-	public String updateBook(@PathParam("id") Integer index, String book) {
+	public Book updateBook(@PathParam("id") Integer index, Book book) {
 		books.set(index, book);
 		return book;
 	}
 
 	@DELETE
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
-	public String deleteBook(@PathParam("id") Integer index) {
+	public Book deleteBook(@PathParam("id") Integer index) {
 		return books.remove(index.intValue());
 	}
 }
