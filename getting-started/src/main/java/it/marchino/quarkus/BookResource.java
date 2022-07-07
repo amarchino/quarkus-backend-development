@@ -3,6 +3,9 @@ package it.marchino.quarkus;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.validation.Valid;
+import javax.validation.Validator;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,14 +17,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import it.marchino.quarkus.data.Book;
+import it.marchino.quarkus.service.BookService;
 
 @Path("/book")
 public class BookResource {
+	@Inject Validator validator;
+	@Inject BookService bookService;
 
 	private static List<Book> books = new ArrayList<>();
 
 	static {
-		books.add(new Book("The Freelancer's Bible", "IDK"));
+		books.add(new Book("The Freelancer's Bible", "IDK", 10));
 	}
 
 	@GET
@@ -34,7 +40,12 @@ public class BookResource {
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addBook(Book book) {
+	public Response addBook(/*@Valid*/ Book book) {
+		bookService.checkBook(book);
+		// Set<ConstraintViolation<Book>> violations = validator.validate(book);
+		// if(!violations.isEmpty()) {
+		// 	return Response.status(400).build();
+		// }
 		if(books.size() > 5) {
 			return Response.status(400).entity("No more than 5 books allowed").build();
 		}
