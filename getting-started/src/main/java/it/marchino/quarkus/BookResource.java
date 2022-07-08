@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.validation.Valid;
 import javax.validation.Validator;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
