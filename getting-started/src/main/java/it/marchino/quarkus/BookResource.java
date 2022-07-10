@@ -1,6 +1,7 @@
 package it.marchino.quarkus;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -31,10 +32,11 @@ public class BookResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getBooks() {
+	public Collection<Book> getBooks() {
 		// return Response.ok(books).build();
 		// return Response.serverError().build();
-		return Response.status(202).entity(books).build();
+		// return Response.status(202).entity(books).build();
+		return books;
 	}
 
 	@POST
